@@ -3,10 +3,12 @@ import HomePage from "../POM/ssHomePage"
 import {login} from "../utilities/businessUtilities"
 import loginData from "../Data Driven Testing/ssLogindetails.json"
 import path from "node:path"
+import HelpPage from "../POM/ssHelpPage"
 test("shopper login",async ({page}) => {
     //POM
     let homePageObj=new HomePage(page);
-    
+    let helpPageObj=new HelpPage(page);
+
     await page.goto(loginData.url);
     //Home page
     await homePageObj.loginButton.waitFor({state:"attached"})
@@ -17,15 +19,15 @@ test("shopper login",async ({page}) => {
 
     //Add profile page
     //helpcenter
-    await page.getByRole('link',{name:'Help Center'}).hover();
-    await page.getByRole('link',{name:'Help Center'}).click();
+    await homePageObj.helpCenterLink.hover();
+    await homePageObj.helpCenterLink.click();
     //Avatar Images
-    await page.locator("//button[text()='Avatar Images']").click();
+    await helpPageObj.avatarImageTab.click();
 
     //Download the image
     let [downloadall]=await Promise.all([
         page.waitForEvent("download"),
-        page.getByAltText("avatar 2").locator('xpath=following-sibling::a').click()
+        helpPageObj.girlAvatarImageDownloadbutton.click()
     ])
     const suggestedFileName=downloadall.suggestedFilename();
     let filePath=path.join(__dirname,`../Downloads/${suggestedFileName}`); 
