@@ -47,6 +47,7 @@ test("shopper login",async ({page}) => {
     await page.waitForTimeout(2000);
     
     await downloadall.delete();
+    
     //Take a ScreenShot
     let ScreenShotPath_Profile=path.join(__dirname,"../ScreenShots/profile.png");
     await page.screenshot({path:ScreenShotPath_Profile});
