@@ -4,10 +4,12 @@ import {login} from "../utilities/businessUtilities"
 import loginData from "../Data Driven Testing/ssLogindetails.json"
 import path from "node:path"
 import HelpPage from "../POM/ssHelpPage"
+import MyprofilePage from "../POM/ssMyProfilePage"
 test("shopper login",async ({page}) => {
     //POM
     let homePageObj=new HomePage(page);
     let helpPageObj=new HelpPage(page);
+    let myprofilePageObj=new MyprofilePage(page);
 
     await page.goto(loginData.url);
     //Home page
@@ -38,10 +40,10 @@ test("shopper login",async ({page}) => {
     await homePageObj.accountIcon.click();
     await homePageObj.myprofileList.click();
     //Click image add icon
-    await page.getByTestId('AddPhotoAlternateOutlinedIcon').click();
+    await myprofilePageObj.addPhotoIcon.click();
     await page.waitForTimeout(2000);
-    await page.getByRole('button',{name:"Choose File"}).setInputFiles(filePath);
-    await page.getByRole('button',{name:"upload"}).click();
+    await myprofilePageObj.chooseFileButton.setInputFiles(filePath);
+    await myprofilePageObj.uploadButton.click();
     await page.waitForTimeout(2000);
     
     await downloadall.delete();
