@@ -35,8 +35,8 @@ test("shopper login",async ({page}) => {
     console.log("file Name: "+filePath);
     
     //Account Icon
-    await page.locator('[aria-label="Account settings"]').click();
-    await page.getByText("My Profile").click();
+    await homePageObj.accountIcon.click();
+    await homePageObj.myprofileList.click();
     //Click image add icon
     await page.getByTestId('AddPhotoAlternateOutlinedIcon').click();
     await page.waitForTimeout(2000);
