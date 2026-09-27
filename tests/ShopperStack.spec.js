@@ -2,6 +2,7 @@ import {expect, test} from "@playwright/test"
 import HomePage from "../POM/ssHomePage"
 import {login} from "../utilities/businessUtilities"
 import loginData from "../Data Driven Testing/ssLogindetails.json"
+import path from "node:path"
 test("shopper login",async ({page}) => {
     //POM
     let homePageObj=new HomePage(page);
@@ -26,32 +27,25 @@ test("shopper login",async ({page}) => {
         page.waitForEvent("download"),
         page.getByAltText("avatar 2").locator('xpath=following-sibling::a').click()
     ])
-        
-    console.log(downloadall.filePath);
-        
-        
-    //Get downloaded file
-    // const download = await downloadPromise;
-
-    // //Get temporary downloaded file path
-    // const filePath = await download.path();
-
-    // console.log("Temporary file path:", filePath);
-    // console.log("File path:", filePath);
-    // console.log("Suggested filename:", download.suggestedFilename());
-    // console.log("Failure:", await download.failure());
+    const suggestedFileName=downloadall.suggestedFilename();
+    let filePath=path.join(__dirname,`../Downloads/${suggestedFileName}`); 
+    await downloadall.saveAs(filePath); //!Save a downloaded image in perticular location
+    console.log("file Name: "+filePath);
+    
     //Account Icon
     await page.locator('[aria-label="Account settings"]').click();
     await page.getByText("My Profile").click();
     //Click image add icon
     await page.getByTestId('AddPhotoAlternateOutlinedIcon').click();
     await page.waitForTimeout(2000);
-    // await page.getByRole('button',{name:"Choose File"}).click();
-    // await page.locator('input[type="file"]').setInputFiles(filePath);
     await page.getByRole('button',{name:"Choose File"}).setInputFiles(filePath);
     await page.getByRole('button',{name:"upload"}).click();
     await page.waitForTimeout(2000);
     
+    await downloadall.delete();
+    //Take a ScreenShot
+    let ScreenShotPath_Profile=path.join(__dirname,"../ScreenShots/profile.png");
+    await page.screenshot({path:ScreenShotPath_Profile});
 
 /*
     //Men Session page
